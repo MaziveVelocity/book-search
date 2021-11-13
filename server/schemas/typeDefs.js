@@ -1,10 +1,6 @@
-const {gql} =require('apollo-server-express');
+const { gql } = require('apollo-server-express');
 
 const typeDefs = gql`
-    tpye Query{
-        me: User
-    }
-
     type User{
         _id: ID
         username: String
@@ -22,15 +18,28 @@ const typeDefs = gql`
         link: String
     }
 
+    input BookInput{
+        bookId: String
+        authors: [String]
+        description: String
+        title: String
+        image: String
+        link: String
+    }
+
     type Auth{
         token: ID!
         user: User
     }
 
+    type Query{
+        me: User
+    }
+
     type Mutation{
         login (email: String!, password: String!): Auth
         addUser (email: String!, password: String!, username: String!): Auth
-        saveBook (input: [BookInput]): User
+        saveBook (input: BookInput): User
         removeBook (bookId: ID!): User
     }
 `;
