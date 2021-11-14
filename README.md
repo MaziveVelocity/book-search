@@ -26,8 +26,8 @@ a discription, image of the cover and the authors who wrote the book.
 
 
 Main search
-![Main search page image](assets\images\screenshot-1.jpg)
+![Main search page image](assets/images/screenshot-1.jpg)
 
 ---
 Saved books
-![Main search page image](assets\images\screenshot-2.jpg)
+![Main search page image](assets/images/screenshot-2.jpg)
