@@ -35,7 +35,7 @@ const LoginForm = () => {
         throw new Error('something went wrong!');
       }
 
-      const { token, user } = await response.data.login;
+      const { token } = await response.data.login;
       Auth.login(token);
 
     } catch (err) {
