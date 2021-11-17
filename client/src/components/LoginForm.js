@@ -30,8 +30,7 @@ const LoginForm = () => {
 
     try {
       const response = await login({variables: {...userFormData}});
-      console.log(response)
-
+      
       if (!response) {
         throw new Error('something went wrong!');
       }

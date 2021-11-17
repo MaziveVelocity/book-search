@@ -30,8 +30,6 @@ const SignupForm = () => {
       event.stopPropagation();
     }
 
-    console.log(userFormData)
-
     try {
       const response = await addUser({variables: {...userFormData}});
 
@@ -39,10 +37,7 @@ const SignupForm = () => {
         throw new Error('something went wrong!');
       }
 
-      console.log('the response is: ', response);
       const { token, user } = await response.data;
-
-      console.log(user);
       Auth.login(token);
 
     } catch (err) {

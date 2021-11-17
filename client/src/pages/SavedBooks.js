@@ -1,10 +1,12 @@
 import React, { useState, useEffect } from 'react';
 import { Jumbotron, Container, CardColumns, Card, Button } from 'react-bootstrap';
 
-import { useMutation } from '@apollo/react-hooks';
-import { getMe, deleteBook } from '../utils/API';
+import { useMutation, useQuery } from '@apollo/react-hooks';
+// import { getMe, deleteBook } from '../utils/API';
 import Auth from '../utils/auth';
 import { REMOVE_BOOK } from '../utils/mutations';
+import { GET_ME } from '../utils/queries';
+
 
 const SavedBooks = () => {
   const [userData, setUserData] = useState({});
@@ -13,6 +15,7 @@ const SavedBooks = () => {
   const userDataLength = Object.keys(userData).length;
 
   const [removeBook, { error }] = useMutation(REMOVE_BOOK);
+  const { loading, data } = useQuery(GET_ME)
 
   useEffect(() => {
     const getUserData = async () => {
@@ -23,14 +26,14 @@ const SavedBooks = () => {
           return false;
         }
 
-        const response = await getMe(token);
-
+        const response = data;
         if (!response) {
           throw new Error('something went wrong!');
         }
 
         const user = await response;
         setUserData(user);
+        window.location.reload()
       } catch (err) {
         console.error(err);
       }
@@ -48,7 +51,9 @@ const SavedBooks = () => {
     }
 
     try {
-      const response = await deleteBook(bookId, token);
+
+      const response = await removeBook({variables: { bookId: bookId }});
+      window.location.reload();
 
       if (!response) {
         throw new Error('something went wrong!');
@@ -57,14 +62,14 @@ const SavedBooks = () => {
       const updatedUser = await response.json();
       setUserData(updatedUser);
       // upon success, remove book's id from localStorage
-      removeBook({bookId});
+
     } catch (err) {
       console.error(error);
     }
   };
 
   // if data isn't here yet, say so
-  if (!userDataLength) {
+  if (loading) {
     return <h2>LOADING...</h2>;
   }
 
@@ -77,12 +82,12 @@ const SavedBooks = () => {
       </Jumbotron>
       <Container>
         <h2>
-          {userData.savedBooks.length
-            ? `Viewing ${userData.savedBooks.length} saved ${userData.savedBooks.length === 1 ? 'book' : 'books'}:`
+          {data.me.savedBooks.length
+            ? `Viewing ${data.me.savedBooks.length} saved ${data.me.savedBooks.length === 1 ? 'book' : 'books'}:`
             : 'You have no saved books!'}
         </h2>
         <CardColumns>
-          {userData.savedBooks.map((book) => {
+          {data.me.savedBooks.map((book) => {
             return (
               <Card key={book.bookId} border='dark'>
                 {book.image ? <Card.Img src={book.image} alt={`The cover for ${book.title}`} variant='top' /> : null}
