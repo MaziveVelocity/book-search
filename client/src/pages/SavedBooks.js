@@ -2,6 +2,10 @@ import React, { useState, useEffect } from 'react';
 import { Jumbotron, Container, CardColumns, Card, Button } from 'react-bootstrap';
 
 import { useMutation, useQuery } from '@apollo/react-hooks';
+<<<<<<< HEAD
+=======
+// import { getMe, deleteBook } from '../utils/API';
+>>>>>>> feature/apollo-server
 import Auth from '../utils/auth';
 import { REMOVE_BOOK } from '../utils/mutations';
 import { GET_ME } from '../utils/queries';
